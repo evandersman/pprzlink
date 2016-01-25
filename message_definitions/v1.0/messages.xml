@@ -857,9 +857,20 @@
   <message name="BLUEGIGA" id="106">
     <field name="data_rate" type="uint32" unit="bytes/s"/>
   </message>
-  
-  <!--107 is free -->
-  <!--108 is free -->
+
+   <message name="ADC_TURBULENCE_RAW" id="107">
+     <field name="airspeed_left_raw" type="uint16"/>
+     <field name="pitch_left_raw" type="uint16"/>
+     <field name="airspeed_right_raw" type="uint16"/>
+     <field name="pitch_right_raw" type="uint16"/>
+   </message>
+
+   <message name="ADC_TURBULENCE_SCALED" id="108">
+     <field name="pitch_left_filtered" type="float"/>
+     <field name="pitch_left_scaled" type="float"/>
+     <field name="pitch_right_filtered" type="float"/>
+     <field name="pitch_right_scaled" type="float"/>
+   </message>
 
   <message name="MULTIGAZE_METERS" id="109">
     <field name="multigaze_meters" type="float[]"/>
@@ -1888,16 +1899,15 @@
   </message>
 
   <message name="STAB_ATTITUDE_INDI" id="216">
-    <field name="angular_accel_p" type="float"/>
-    <field name="angular_accel_q" type="float"/>
-    <field name="angular_accel_r" type="float"/>
     <field name="angular_accel_ref_p" type="float"/>
     <field name="angular_accel_ref_q" type="float"/>
     <field name="angular_accel_ref_r" type="float"/>
-    <field name="g1_p" type="float"/>
-    <field name="g1_q" type="float"/>
-    <field name="g1_r" type="float"/>
-    <field name="g2_r" type="float"/>
+    <field name="du_p" type="float"/>
+    <field name="du_q" type="float"/>
+    <field name="du_r" type="float"/>
+    <field name="uin_p" type="float"/>
+    <field name="uin_q" type="float"/>
+    <field name="uin_r" type="float"/>
   </message>
 
   <!--217 is free -->
