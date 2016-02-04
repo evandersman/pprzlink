@@ -27,7 +27,6 @@
 
 #include "pprzlink/xbee_transport.h"
 #include "pprzlink/print_utils.h"
-#include "mcu_periph/uart_arch.h"
 
 /** Ground station address */
 #define GROUND_STATION_ADDR 0x100
@@ -201,25 +200,6 @@ static uint8_t xbee_try_to_enter_api(struct link_device *dev, void (*wait)(uint3
   return xbee_text_reply_is_ok(dev);
 }
 
-<<<<<<< HEAD
-=======
-#if (XBEE_BAUD == B9600)
-#undef XBEE_BAUD
-#define XBEE_BAUD 9600
-#define XBEE_BAUD_ALTERNATE 57600
-#define XBEE_ATBD_CODE "ATBD3\rATWR\r"
-#pragma message "Experimental: XBEE-API@9k6 auto-baudrate 57k6 -> 9k6 (stop ground link for correct operation)"
-#elif XBEE_BAUD == B57600
-#undef XBEE_BAUD
-#define XBEE_BAUD 57600
-#define XBEE_BAUD_ALTERNATE 9600
-#define XBEE_ATBD_CODE "ATBD6\rATWR\r"
-#pragma message "Experimental: XBEE-API@57k6 auto-baudrate 9k6 -> 57k6 (stop ground link for correct operation)"
-#else
-#pragma message "XBEE-API Non default baudrate: auto-baud disabled."
-#endif
-
->>>>>>> fixed xbee api
 // Init function
 void xbee_transport_init(struct xbee_transport *t, struct link_device *dev, uint16_t addr, enum XBeeType type, uint32_t baudrate, void (*wait)(uint32_t), char *xbee_init)
 {
@@ -262,7 +242,6 @@ void xbee_transport_init(struct xbee_transport *t, struct link_device *dev, uint
     }
 
     if (! xbee_try_to_enter_api(dev, wait)) {
-<<<<<<< HEAD
       // skip autobaud if baudrate is 0
       if (alternate > 0) {
         // Badly configured... try the alternate baudrate:
@@ -283,21 +262,6 @@ void xbee_transport_init(struct xbee_transport *t, struct link_device *dev, uint
           print_string(dev, "\r");
         }
         // Continue changing settings until the EXIT is issued.
-=======
-#if defined XBEE_BAUD && defined XBEE_BAUD_ALTERNATE
-      // Badly configured... try the alternate baudrate:
-      dev->set_baudrate(dev->periph, XBEE_BAUD_ALTERNATE); // FIXME add set_baudrate to generic device
-      if (xbee_try_to_enter_api(dev, wait)) {
-        // The alternate baudrate worked,
-        print_string(dev, XBEE_ATBD_CODE);
-      } else {
-        // Complete failure, none of the 2 baudrates result in any reply
-        // TODO: set LED?
-
-        // Set the default baudrate, just in case everything is right
-        dev->set_baudrate(dev->periph, XBEE_BAUD); // FIXME add set_baudrate to generic device
-        print_string(dev, "\r");
->>>>>>> fixed xbee api
       }
     }
 
@@ -316,16 +280,10 @@ void xbee_transport_init(struct xbee_transport *t, struct link_device *dev, uint
     // Switching back to normal mode (and apply all parameters' changes)
     print_string(dev, AT_EXIT);
 
-<<<<<<< HEAD
     // Set the desired baudrate for normal operation
     if (baudrate > 0) {
       dev->set_baudrate(dev->periph, baudrate);
     }
-=======
-#ifdef XBEE_BAUD
-    dev->set_baudrate(dev->periph, XBEE_BAUD); // FIXME add set_baudrate to generic device
-#endif
->>>>>>> fixed xbee api
 
   }
 }
@@ -420,4 +378,3 @@ void xbee_check_and_parse(struct link_device *dev, struct xbee_transport *trans,
     }
   }
 }
-
